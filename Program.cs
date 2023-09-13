@@ -77,20 +77,50 @@ namespace Part_4_Random_Assignment
             Console.WriteLine(dice2);
             Console.WriteLine($"The sum of these rolls is equal to {dice1+dice2}.");
             Console.WriteLine("Part 3 Random Decimal Numbers");
-            int decimals, precision, numberOfDigits;
-            string stringPrecision;
-            double num3, num4;
+            int decimals, numberOfDigits;
+            string stringPrecision, formatedNumber;
+            double num3, num4, randomDouble, precision;
             Console.Write("How many decimals do you want in the random numbers? ");
-            decimals= Convert.ToInt32(Console.ReadLine());
+            valid = false;
+            do
+            {
+                if (int.TryParse(Console.ReadLine(), out decimals))
+                {
+                    valid = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Number");
+                }
+            }while (valid==false);
             Console.Write("Specify the decimal precision: .");
-            precision = Convert.ToInt32(Console.ReadLine());
+            valid = false;
+            do
+            {
+                if (Double.TryParse(Console.ReadLine(), out precision))
+                {
+                    valid = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Number");
+                    Console.Write(".");
+                }
+            }while (valid==false);
             stringPrecision = Convert.ToString(precision);
             numberOfDigits= Convert.ToInt32(stringPrecision.Length);
-            num3 = +precision / numberOfDigits; num4 = +precision / numberOfDigits;
+            num3 =num1+precision / (numberOfDigits*10); num4 = num2+precision / (numberOfDigits*10);
             Console.WriteLine("3 Random Numbers in that range are: ");
             for (int i = 0; i < 3; i++)
             {
-                Console.Write(generator.NextDouble() * (num3-num4) +num3);
+                do
+                {
+                    randomDouble = generator.NextDouble() * (Math.Max(num3, num4) - Math.Min(num4, num3) + Math.Min(num3, num4));
+                    randomDouble = Math.Round(randomDouble, decimals);
+                
+                } while (randomDouble >= Math.Max(num3, num4) && randomDouble <= Math.Min(num4, num3));
+                formatedNumber = randomDouble.ToString("F" + decimals);
+                Console.WriteLine($"Random Number {i + 1}:{formatedNumber}");
             }
             Console.ReadLine();
         }
